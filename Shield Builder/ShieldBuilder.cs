@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.IO;
 
 public class ShieldBuilder : MonoBehaviour, IShieldBuilder
 {
@@ -87,8 +88,16 @@ public class ShieldBuilder : MonoBehaviour, IShieldBuilder
     public void SaveShield()
     {
         Sprite shield = previewShield.sprite;
-        print(shield.rect);
-        //Do something with the shield.
+
+        //Temporarily, save the shield as a PNG
+        byte[] bytes = shield.texture.EncodeToPNG();
+        string path = Application.dataPath + "/Saved Shields/";
+
+        string name = currentPattern.name.Replace(" ", "") + currentColour.name.Replace(" ", "");
+
+        File.WriteAllBytes(path + shield.name + name + ".png", bytes);
+        print("Shield saved");
+        
     }
 
     private void InstantiatePattern(Sprite pattern)
